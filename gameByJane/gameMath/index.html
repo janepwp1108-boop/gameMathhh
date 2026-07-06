@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Speed Challenge</title>
+
+<link rel="stylesheet" href="css/main.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+
+
+<div class="background">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+<div class="container">
+
+    <div class="glass-card fade-in">
+
+        <div class="logo">
+            🧮
+        </div>
+
+        <h1>Math Speed Challenge</h1>
+
+        <p class="subtitle">
+            เว็บไซต์พัฒนาระบบคิดเลขเร็ว
+        </p>
+
+        <div class="stats">
+
+
+
+        </div>
+
+        <div class="menu-buttons">
+
+            <a href="pages/easy.html" class="btn easy">
+                ระดับง่าย
+            </a>
+
+            <a href="pages/medium.html" class="btn medium">
+                ระดับปานกลาง
+            </a>
+
+            <a href="pages/hard.html" class="btn hard">
+                ระดับยาก
+            </a>
+
+        </div>
+
+        <div class="bottom-buttons">
+
+            <button id="soundBtn" class="secondary-btn">
+                🔊 เปิดเสียง
+            </button>
+
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<audio id="clickSound" src="assets/sounds/click.mp3"></audio>
+
+<script src="js/menu.js"></script>
+
+<audio id="bgm" loop>
+    <source src="music/Subway Surfers Main Theme 2012 Original OFFICIAL.mp3 " type="audio/mpeg">
+</audio>
+
+<script>
+document.addEventListener('click', () => {
+    document.getElementById('bgm').play();
+}, { once: true });
+</script>
+
+</body>
+</html>

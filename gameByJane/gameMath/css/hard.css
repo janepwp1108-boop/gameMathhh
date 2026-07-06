@@ -1,0 +1,163 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Kanit',sans-serif;
+}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:radial-gradient(circle,#0f172a,#000);
+color:white;
+overflow:hidden;
+}
+
+.bg span{
+position:absolute;
+width:200px;
+height:200px;
+background:rgba(168,85,247,0.1);
+border-radius:50%;
+animation:move 10s linear infinite;
+}
+
+.bg span:nth-child(1){left:10%;top:10%;}
+.bg span:nth-child(2){right:10%;bottom:10%;}
+.bg span:nth-child(3){left:40%;top:60%;}
+
+@keyframes move{
+0%{transform:translateY(0);}
+100%{transform:translateY(-150px);}
+}
+
+.container{
+width:100%;
+max-width:700px;
+padding:20px;
+}
+
+.card{
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(20px);
+border-radius:25px;
+padding:25px;
+border:1px solid rgba(255,255,255,0.1);
+box-shadow:0 0 40px rgba(139,92,246,0.4);
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.top h1{
+background:linear-gradient(90deg,#f97316,#a855f7);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.home, #soundBtn{
+background:#4f46e5;
+border:none;
+padding:10px 12px;
+border-radius:10px;
+color:white;
+cursor:pointer;
+}
+
+.stats{
+display:flex;
+justify-content:space-between;
+margin:15px 0;
+text-align:center;
+}
+
+.bar{
+height:10px;
+background:rgba(255,255,255,0.1);
+border-radius:10px;
+overflow:hidden;
+margin-bottom:10px;
+}
+
+#barFill{
+height:100%;
+width:100%;
+background:linear-gradient(90deg,#ef4444,#f97316,#a855f7);
+transition:0.5s;
+}
+
+#warning{
+text-align:center;
+color:#facc15;
+height:20px;
+margin-bottom:10px;
+}
+
+.question{
+text-align:center;
+font-size:2rem;
+margin:15px 0;
+}
+
+input{
+width:100%;
+padding:15px;
+border-radius:15px;
+border:none;
+text-align:center;
+font-size:1.2rem;
+outline:none;
+}
+
+button#btn{
+width:100%;
+margin-top:10px;
+padding:15px;
+border:none;
+border-radius:15px;
+background:linear-gradient(90deg,#ef4444,#a855f7);
+color:white;
+font-size:1.2rem;
+cursor:pointer;
+}
+
+#feedback{
+text-align:center;
+margin-top:10px;
+height:20px;
+font-weight:bold;
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.8);
+justify-content:center;
+align-items:center;
+}
+
+.box{
+background:#111827;
+padding:25px;
+border-radius:20px;
+text-align:center;
+width:90%;
+max-width:400px;
+}
+
+.box button{
+margin:5px;
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:#4f46e5;
+color:white;
+cursor:pointer;
+}
