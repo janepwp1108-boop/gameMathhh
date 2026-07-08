@@ -9,6 +9,7 @@ const bar = document.getElementById("barFill");
 const warning = document.getElementById("warning");
 
 const modal = document.getElementById("modal");
+const restartBtn = document.getElementById("restartBtn");
 
 const correctSound = document.getElementById("correctSound");
 const wrongSound = document.getElementById("wrongSound");
@@ -24,128 +25,170 @@ let time = totalTime;
 let currentAnswer = 0;
 
 let sound = JSON.parse(localStorage.getItem("soundEnabled"));
-if(sound === null) sound = true;
+if (sound === null) sound = true;
 
-/* SOUND */
-function play(s){
-if(!sound) return;
-s.currentTime = 0;
-s.play();
+/* ---------- SOUND ---------- */
+function play(s) {
+    if (!sound) return;
+    s.currentTime = 0;
+    s.play();
 }
 
-/* QUESTION */
-function gen(){
-const a = Math.floor(Math.random()*100)+1;
-const b = Math.floor(Math.random()*100)+1;
+/* ---------- QUESTION ---------- */
+function gen() {
 
-const ops = ["+","-","×","÷"];
-const op = ops[Math.floor(Math.random()*ops.length)];
+    const a = Math.floor(Math.random() * 100) + 1;
+    const b = Math.floor(Math.random() * 100) + 1;
 
-if(op==="+") currentAnswer = a+b;
-if(op==="-") currentAnswer = a-b;
-if(op==="×") currentAnswer = a*b;
-if(op==="÷") currentAnswer = parseFloat((a/b).toFixed(2));
+    const ops = ["+", "-", "×", "÷"];
+    const op = ops[Math.floor(Math.random() * ops.length)];
 
-questionEl.textContent = `${a} ${op} ${b}`;
+    switch (op) {
+        case "+":
+            currentAnswer = a + b;
+            break;
+
+        case "-":
+            currentAnswer = a - b;
+            break;
+
+        case "×":
+            currentAnswer = a * b;
+            break;
+
+        case "÷":
+            currentAnswer = parseFloat((a / b).toFixed(2));
+            break;
+    }
+
+    questionEl.textContent = `${a} ${op} ${b}`;
 }
 
 gen();
 
-/* AUTO CHANGE EVERY 2s */
-let auto = setInterval(()=>{
-gen();
-combo = 0;
-warning.textContent = "⚠️ หมดเวลาโจทย์!";
-wrong++;
-updateUI();
-},30000);
+bar.style.width = "100%";
 
-/* TIMER */
+/* ---------- AUTO CHANGE ---------- */
+let auto = setInterval(() => {
+
+    gen();
+
+    combo = 0;
+    wrong++;
+
+    answer.value = "";
+
+    warning.textContent = "⚠️ หมดเวลาโจทย์!";
+
+    updateUI();
+
+}, 60000);
+
+/* ---------- TIMER ---------- */
 let timer = setInterval(() => {
 
     time--;
 
+    if (time < 0) time = 0;
+
     timeEl.textContent = time;
 
-    // ลดความกว้างของแถบ
     bar.style.width = (time / totalTime) * 100 + "%";
 
-    if (time <= 0) {
-        time = 0;
-        timeEl.textContent = 0;
-        bar.style.width = "0%";
+    if (time === 0) {
 
         clearInterval(timer);
         clearInterval(auto);
 
         end();
+
     }
 
 }, 1000);
 
-/* CHECK */
-btn.onclick = ()=>{
-const val = parseFloat(answer.value);
-if(isNaN(val)) return;
+/* ---------- CHECK ANSWER ---------- */
+btn.onclick = () => {
 
-if(val === currentAnswer){
-correct++;
-combo++;
-score += 10;
+    const val = parseFloat(answer.value);
 
-play(correctSound);
+    if (isNaN(val)) return;
 
-warning.textContent = "✔ ถูก!";
-}else{
-wrong++;
-combo=0;
+    if (val === currentAnswer) {
 
-play(wrongSound);
+        correct++;
+        combo++;
+        score += 10;
 
-warning.textContent = "✘ ผิด!";
-}
+        play(correctSound);
 
-answer.value="";
-updateUI();
-gen();
+        warning.textContent = "✔ ตอบถูก";
+
+    } else {
+
+        wrong++;
+        combo = 0;
+
+        play(wrongSound);
+
+        warning.textContent = "✘ ตอบผิด";
+    }
+
+    answer.value = "";
+
+    updateUI();
+
+    gen();
+
 };
 
-function updateUI(){
-scoreEl.textContent = score;
-comboEl.textContent = combo;
+answer.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        btn.click();
+    }
+});
+
+/* ---------- UPDATE ---------- */
+function updateUI() {
+
+    scoreEl.textContent = score;
+    comboEl.textContent = combo;
+
 }
 
-/* END */
-function end(){
+/* ---------- END GAME ---------- */
+function end() {
 
-answer.disabled = true;
-btn.disabled = true;
+    answer.disabled = true;
+    btn.disabled = true;
 
-let high = parseInt(localStorage.getItem("highScore"))||0;
+    let high = parseInt(localStorage.getItem("highScore")) || 0;
 
-if(score>high){
-localStorage.setItem("highScore",score);
-high=score;
+    if (score > high) {
+
+        high = score;
+        localStorage.setItem("highScore", score);
+
+    }
+
+    play(winSound);
+
+    document.getElementById("finalScore").textContent = score;
+    document.getElementById("correct").textContent = correct;
+    document.getElementById("wrong").textContent = wrong;
+
+    let acc = 0;
+
+    if (correct + wrong > 0) {
+        acc = ((correct / (correct + wrong)) * 100).toFixed(1);
+    }
+
+    document.getElementById("acc").textContent = acc + "%";
+    document.getElementById("high").textContent = high;
+
+    modal.style.display = "flex";
 }
 
-restartBtn.addEventListener(
-"click",
-()=>location.reload()
-);
-
-play(winSound);
-
-document.getElementById("finalScore").textContent = score;
-document.getElementById("correct").textContent = correct;
-document.getElementById("wrong").textContent = wrong;
-
-let acc = 0;
-if(correct+wrong>0){
-acc = ((correct/(correct+wrong))*100).toFixed(1);
-}
-
-document.getElementById("acc").textContent = acc;
-document.getElementById("high").textContent = high;
-
-modal.style.display="flex";
-}
+/* ---------- RESTART ---------- */
+restartBtn.onclick = () => {
+    location.reload();
+};
