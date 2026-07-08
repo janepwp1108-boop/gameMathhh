@@ -19,7 +19,8 @@ let combo = 0;
 let correct = 0;
 let wrong = 0;
 
-let time = 60;
+const totalTime = 60;
+let time = totalTime;
 let currentAnswer = 0;
 
 let sound = JSON.parse(localStorage.getItem("soundEnabled"));
@@ -60,18 +61,27 @@ updateUI();
 },30000);
 
 /* TIMER */
-let timer = setInterval(()=>{
-time--;
-timeEl.textContent = time;
+let timer = setInterval(() => {
 
-bar.style.width = (time/30)*100 + "%";
+    time--;
 
-if(time<=0){
-clearInterval(timer);
-clearInterval(auto);
-end();
-}
-},1000);
+    timeEl.textContent = time;
+
+    // ลดความกว้างของแถบ
+    bar.style.width = (time / totalTime) * 100 + "%";
+
+    if (time <= 0) {
+        time = 0;
+        timeEl.textContent = 0;
+        bar.style.width = "0%";
+
+        clearInterval(timer);
+        clearInterval(auto);
+
+        end();
+    }
+
+}, 1000);
 
 /* CHECK */
 btn.onclick = ()=>{

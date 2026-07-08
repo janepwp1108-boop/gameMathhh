@@ -39,7 +39,7 @@ const timer = setInterval(() => {
     timeLeft--;
     timerEl.textContent = timeLeft;
 
-    progressBar.style.width = (timeLeft / 45) * 100 + "%";
+    progressBar.style.width = (timeLeft / 60) * 100 + "%";
 
     if (timeLeft <= 0) {
         clearInterval(timer);
