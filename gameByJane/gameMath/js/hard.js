@@ -37,31 +37,27 @@ function play(s) {
 /* ---------- QUESTION ---------- */
 function gen() {
 
-    const a = Math.floor(Math.random() * 100) + 1;
-    const b = Math.floor(Math.random() * 100) + 1;
+    const type = Math.random() < 0.5 ? "×" : "÷";
 
-    const ops = ["+", "-", "×", "÷"];
-    const op = ops[Math.floor(Math.random() * ops.length)];
+    if (type === "×") {
 
-    switch (op) {
-        case "+":
-            currentAnswer = a + b;
-            break;
+        // โจทย์คูณ
+        const a = Math.floor(Math.random() * 100) + 1;
+        const b = Math.floor(Math.random() * 100) + 1;
 
-        case "-":
-            currentAnswer = a - b;
-            break;
+        currentAnswer = a * b;
+        questionEl.textContent = `${a} × ${b}`;
 
-        case "×":
-            currentAnswer = a * b;
-            break;
+    } else {
 
-        case "÷":
-            currentAnswer = parseFloat((a / b).toFixed(2));
-            break;
+        // โจทย์หาร (หารลงตัวทุกข้อ)
+        const ans = Math.floor(Math.random() * 20) + 1;
+        const divisor = Math.floor(Math.random() * 12) + 1;
+        const dividend = ans * divisor;
+
+        currentAnswer = ans;
+        questionEl.textContent = `${dividend} ÷ ${divisor}`;
     }
-
-    questionEl.textContent = `${a} ${op} ${b}`;
 }
 
 gen();
@@ -101,7 +97,6 @@ let timer = setInterval(() => {
         clearInterval(auto);
 
         end();
-
     }
 
 }, 1000);
@@ -138,9 +133,9 @@ btn.onclick = () => {
     updateUI();
 
     gen();
-
 };
 
+/* ---------- ENTER ---------- */
 answer.addEventListener("keypress", function (e) {
     if (e.key === "Enter") {
         btn.click();
@@ -152,7 +147,6 @@ function updateUI() {
 
     scoreEl.textContent = score;
     comboEl.textContent = combo;
-
 }
 
 /* ---------- END GAME ---------- */
@@ -167,7 +161,6 @@ function end() {
 
         high = score;
         localStorage.setItem("highScore", score);
-
     }
 
     play(winSound);
@@ -192,3 +185,4 @@ function end() {
 restartBtn.onclick = () => {
     location.reload();
 };
+
